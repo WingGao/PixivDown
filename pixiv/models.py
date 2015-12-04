@@ -1,9 +1,15 @@
 import re
 from django.db import models
+from PyEasySetting import PyEasySettingJSON
+
+CONFIG_KEY_COOKIE = 'cookie'
+CONFIG_KEY_COOKIE_EXPIRE = 'cookie_expire'
+
+json_config = PyEasySettingJSON('config.json')
 
 
 def get_link_id(link):
-    #member_illust.php?mode=medium&amp;illust_id=43352503&amp;uarea=daily&amp;ref=rn-b-1-thumbnail-3
+    # member_illust.php?mode=medium&amp;illust_id=43352503&amp;uarea=daily&amp;ref=rn-b-1-thumbnail-3
     return re.findall('illust_id=(\d+)', link)[0]
 
 
@@ -20,7 +26,7 @@ class Item(models.Model):
     create_date = models.DateTimeField(auto_now_add=True)
 
     def get_referer_link(self):
-        #Referer:http://www.pixiv.net/member_illust.php?mode=medium&illust_id=43352503
+        # Referer:http://www.pixiv.net/member_illust.php?mode=medium&illust_id=43352503
         return 'http://www.pixiv.net/member_illust.php?mode=medium&illust_id=%i' % self.pid
 
     def get_big_link(self):

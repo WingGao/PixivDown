@@ -13,6 +13,12 @@ WORK_DRANK = 1
 out = sys.stdout.write
 
 
+def get_opener():
+    o = urllib2.build_opener()
+    o.addheaders = [('Cookie', json_config.get(CONFIG_KEY_COOKIE))]
+    return o
+
+
 def get_time_str():
     return time.strftime("%Y_%m_%d_%H_%M_%S", time.localtime())
 
@@ -57,7 +63,7 @@ def save_ids(ids, stype):
             item.save()
             count += 1
         except django.db.utils.IntegrityError:
-            #illute 18 rank item need update from new
+            # illute 18 rank item need update from new
             if stype == Item.ILLUTE_18:
                 oitem = Item.objects.get(pid=int(id))
                 if oitem.type != Item.ILLUTE_18:
@@ -68,7 +74,7 @@ def save_ids(ids, stype):
 
 
 def is_cookie_expire():
-    t = time.strptime(settings.COOKIE_EXPIRE, '%Y-%m-%d')
+    t = time.strptime(json_config.get(CONFIG_KEY_COOKIE_EXPIRE), '%Y-%m-%d')
     return (time.mktime(t) - time.mktime(time.gmtime())) / 60 / 60 / 24 < 1
 
 
@@ -80,7 +86,8 @@ def get_big_link(item):
             try:
                 # time.sleep(3)
                 opener = urllib2.build_opener()
-                opener.addheaders = [('Cookie', settings.COOKIE), ('Referer', item.get_referer_link())]
+                opener.addheaders = [('Cookie', json_config.get(CONFIG_KEY_COOKIE)),
+                                     ('Referer', item.get_referer_link())]
                 res = opener.open(item.get_big_link(), timeout=30)
                 imglink = re.findall('<img.*?"(.*?)"', res.read())
                 if len(imglink) > 0:
@@ -110,7 +117,7 @@ def download_img(item):
     while time <= maxtime:
         try:
             opener = urllib2.build_opener()
-            opener.addheaders = [('Cookie', settings.COOKIE), ('Referer', item.big_link)]
+            opener.addheaders = [('Cookie', json_config.get(CONFIG_KEY_COOKIE)), ('Referer', item.big_link)]
             res = opener.open(item.big_link)
             if item.type == Item.ILLUTE:
                 path = os.path.join(settings.DOWNLOAD_PATH, 'pt')
@@ -118,7 +125,7 @@ def download_img(item):
                 path = os.path.join(settings.DOWNLOAD_PATH, 'r')
             with open(os.path.join(path, 'pixiv_' + item.get_filename()), 'wb') as f:
                 f.write(res.read())
-            #跳出循环
+            # 跳出循环
             return True
         except urllib2.HTTPError, e:
             print 'HTTPError: ' + item[2]
@@ -137,7 +144,7 @@ def download_img(item):
 
 def do_scan(mode, content, stype):
     for i in range(1, 11):
-        ids = get_page(settings.OPENER,
+        ids = get_page(get_opener(),
                        'http://www.pixiv.net/ranking.php?format=json&mode=%s&content=%s&p=%i' % (
                            mode, content, i))
         if ids is not None:
@@ -147,7 +154,7 @@ def do_scan(mode, content, stype):
 
 def do_scan_new(mode, stype):
     for i in range(1, 6):
-        ids = get_page_new(settings.OPENER, 'http://www.pixiv.net/%s.php?p=%i' % (mode, i))
+        ids = get_page_new(get_opener(), 'http://www.pixiv.net/%s.php?p=%i' % (mode, i))
         if ids is not None:
             save_ids(ids, stype)
         time.sleep(3)
@@ -161,7 +168,7 @@ def do_download(dtype):
     count = 0
     if dtype == 1:
         for item in items:
-            #print '[%s] Parse %i [%i/%i]' % (time.asctime(), item.pid, count, items.count())
+            # print '[%s] Parse %i [%i/%i]' % (time.asctime(), item.pid, count, items.count())
             count += 1
             get_big_link(item)
             if item.big_link == Item.DELETE:
@@ -199,7 +206,7 @@ def do_download(dtype):
 
 
 class Command(BaseCommand):
-    #D:\GitHub\PixivDown\manage.py scanpage illust
+    # D:\GitHub\PixivDown\manage.py scanpage illust
     args = '[illust, illust_18,illust_18_new, download, export]'
     help = 'scan the page'
 
@@ -230,6 +237,3 @@ class Command(BaseCommand):
             do_download(2)
         else:
             return
-
-
-

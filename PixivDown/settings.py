@@ -44,7 +44,7 @@ INSTALLED_APPS = (
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -78,15 +78,14 @@ USE_L10N = True
 
 USE_TZ = True
 
+TEMPLATE_DIRS = [
+    os.path.join(BASE_DIR, 'templates'),
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
 
-COOKIE = 'PHPSESSID=5661475_d26c0c18e81ffb726c3fce2d07b9a208'
-COOKIE_EXPIRE = '2015-11-27'
-OPENER = urllib2.build_opener()
-OPENER.addheaders = [('Cookie', COOKIE)]
 PROXY = urllib2.ProxyHandler({"https": "http://192.168.1.101:5555"})
 DOWNLOAD_PATH = '/home/pi/PixivDown/export'
