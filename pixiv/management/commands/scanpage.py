@@ -15,7 +15,7 @@ out = sys.stdout.write
 
 def get_opener():
     o = urllib2.build_opener()
-    o.addheaders = [('Cookie', json_config.get(CONFIG_KEY_COOKIE))]
+    o.addheaders = [('Cookie', get_config().get(CONFIG_KEY_COOKIE))]
     return o
 
 
@@ -74,7 +74,7 @@ def save_ids(ids, stype):
 
 
 def is_cookie_expire():
-    t = time.strptime(json_config.get(CONFIG_KEY_COOKIE_EXPIRE), '%Y-%m-%d')
+    t = time.strptime(get_config().get(CONFIG_KEY_COOKIE_EXPIRE), '%Y-%m-%d')
     return (time.mktime(t) - time.mktime(time.gmtime())) / 60 / 60 / 24 < 1
 
 
@@ -86,7 +86,7 @@ def get_big_link(item):
             try:
                 # time.sleep(3)
                 opener = urllib2.build_opener()
-                opener.addheaders = [('Cookie', json_config.get(CONFIG_KEY_COOKIE)),
+                opener.addheaders = [('Cookie', get_config().get(CONFIG_KEY_COOKIE)),
                                      ('Referer', item.get_referer_link())]
                 res = opener.open(item.get_big_link(), timeout=30)
                 imglink = re.findall('<img.*?"(.*?)"', res.read())
@@ -117,7 +117,7 @@ def download_img(item):
     while time <= maxtime:
         try:
             opener = urllib2.build_opener()
-            opener.addheaders = [('Cookie', json_config.get(CONFIG_KEY_COOKIE)), ('Referer', item.big_link)]
+            opener.addheaders = [('Cookie', get_config().get(CONFIG_KEY_COOKIE)), ('Referer', item.big_link)]
             res = opener.open(item.big_link)
             if item.type == Item.ILLUTE:
                 path = os.path.join(settings.DOWNLOAD_PATH, 'pt')
