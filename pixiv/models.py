@@ -1,12 +1,16 @@
 import re
 from django.db import models
 from PyEasySetting import PyEasySettingJSON
+from django.conf import settings
+import os
 
 CONFIG_KEY_COOKIE = 'cookie'
 CONFIG_KEY_COOKIE_EXPIRE = 'cookie_expire'
 
+
 def get_config():
-    return PyEasySettingJSON('config.json')
+    return PyEasySettingJSON(os.path.join(settings.BASE_DIR, 'config.json'))
+
 
 def get_link_id(link):
     # member_illust.php?mode=medium&amp;illust_id=43352503&amp;uarea=daily&amp;ref=rn-b-1-thumbnail-3
