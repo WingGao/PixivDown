@@ -6,44 +6,11 @@ import urllib2
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 from flickr.models import *
+import flickr.views as view
 
 
 def get_time_str():
     return time.strftime("%Y_%m_%d_%H_%M_%S", time.localtime())
-
-
-def get_magic_cookie():
-    html = urllib2.urlopen('https://www.flickr.com/explore/').read()
-    # print html
-    return re.findall('"magic_cookie":"(.*?)"', html)[0], re.findall('"open_context_id":"explore-(.*?)"', html)[0]
-
-
-def get_page(date, magic_cookie):
-    url = 'https://www.flickr.com/explore?data=1&day=%s&view=ju&start=0&count=500&append=1&magic_cookie=%s' % (
-        date, magic_cookie)
-    print '[%s] get link %s' % (time.asctime(), url)
-    html = urllib2.urlopen(url).read()
-    objs = json.loads(html)
-    print len(objs)
-    count = 0;
-    for i in objs:
-        if i['is_video']:
-            continue
-
-        sizes = i['sizes']
-        for s in ['o', 'k', 'h', 'l', 'c', 'z', 'm', 'n', 's', 't', 'q', 'sq']:
-            if s in sizes:
-                size_k = s
-                size_v = sizes[s]
-                break
-        try:
-            item = FlickrItem(pid=long(i['id']), size=size_k, link=size_v['url'])
-            item.save()
-            count += 1
-        except django.db.utils.IntegrityError:
-            pass
-
-    print '[%s] items add %i' % (time.asctime(), count)
 
 
 def do_download(dtype):
@@ -106,19 +73,12 @@ class Command(BaseCommand):
     args = '[scan, download, export]'
     help = 'flickr.com'
 
-
     def handle(self, *args, **options):
         a1 = args[0]
         if a1 == 'scan':
-            magic_cookie, date_string = get_magic_cookie()
-            get_page(date_string, magic_cookie)
+            view.scan(None)
         elif a1 == 'download':
             do_download(1)
         elif a1 == 'export':
             do_download(2)
             pass
-
-
-
-
-
