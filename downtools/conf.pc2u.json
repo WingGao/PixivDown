@@ -1,0 +1,44 @@
+[
+    {
+        "note": "flickr to u",
+        "dir_from": "E:\\Pixiv\\flickr",
+        "dir_to": "H:\\flickr",
+        "action": "move",
+        "ignores": ["picasa\\.ini", "\\.aria2"]
+    },
+    {
+        "note": "pt to u",
+        "dir_from": "E:\\Pixiv\\pt",
+        "dir_to": "H:\\pt",
+        "action": "copy",
+        "ignores": ["picasa\\.ini", "\\.aria2"]
+    },
+    {
+        "note": "pt in e remove",
+        "dir_from": "E:\\Other\\pt",
+        "dir_to": "",
+        "action": "delete",
+        "ignores": ["picasa\\.ini", "\\.aria2"]
+    },
+    {
+        "note": "pt to e",
+        "dir_from": "E:\\Pixiv\\pt",
+        "dir_to": "E:\\Other\\pt",
+        "action": "move",
+        "ignores": ["picasa\\.ini", "\\.aria2"]
+    },
+    {
+        "note": "pixiv to u",
+        "dir_from": "E:\\Pixiv\\r",
+        "dir_to": "H:\\r",
+        "action": "move",
+        "ignores": ["picasa\\.ini", "\\.aria2"]
+    },
+    {
+        "note": "pixiv to u",
+        "dir_from": "E:\\Pixiv\\r_new",
+        "dir_to": "H:\\r_new",
+        "action": "move",
+        "ignores": ["picasa\\.ini", "\\.aria2"]
+    }
+]

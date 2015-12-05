@@ -36,15 +36,16 @@ def run_aria(p, out, session):
 
 def loop_text_aria(p):
     root, dirs, files = os.walk(p).next()
+    path = os.path.abspath(p)
     for name in files:
         if name.startswith('flickr_combine_'):
-            run_aria(name, 'E:/Pixiv/flickr', 'session_f.txt')
+            run_aria(name, os.path.join(path, 'flickr'), 'session_f.txt')
         elif name.startswith('pixiv_pt_combine_'):
-            run_aria(name, 'E:/Pixiv/pt', 'session_p.txt')
+            run_aria(name, os.path.join(path, 'pt'), 'session_p.txt')
         elif name.startswith('pixiv_r_new_combine_'):
-            run_aria(name, 'E:/Pixiv/r_new', 'session_rn.txt')
+            run_aria(name, os.path.join(path, 'r_new'), 'session_rn.txt')
         elif name.startswith('pixiv_r_combine_'):
-            run_aria(name, 'E:/Pixiv/r', 'session_r.txt')
+            run_aria(name, os.path.join(path, 'r'), 'session_r.txt')
 
 
 if __name__ == '__main__':

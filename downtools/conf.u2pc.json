@@ -1,0 +1,58 @@
+[
+    {
+        "note": "u in r remove",
+        "dir_from": "E:\\Other\\r",
+        "dir_to": "",
+        "action": "delete",
+        "ignores": ["picasa\\.ini"]
+    },
+    {
+        "note": "u to r",
+        "dir_from": "H:\\r",
+        "dir_to": "E:\\Other\\r",
+        "action": "move",
+        "ignores": ["picasa\\.ini"]
+    },
+    {
+        "note": "u in r_fav remove",
+        "dir_from": "E:\\Other\\r_fav",
+        "dir_to": "",
+        "action": "delete",
+        "ignores": ["picasa\\.ini"]
+    },
+    {
+        "note": "u to r_fav",
+        "dir_from": "H:\\r_fav",
+        "dir_to": "E:\\Other\\r_fav",
+        "action": "move",
+        "ignores": ["picasa\\.ini"]
+    },
+    {
+        "note": "u r_new del",
+        "dir_from": "H:\\r_new",
+        "dir_to": "",
+        "action": "delete",
+        "ignores": ["picasa\\.ini"]
+    },
+    {
+        "note": "u flickr del",
+        "dir_from": "H:\\flickr",
+        "dir_to": "",
+        "action": "delete",
+        "ignores": ["picasa\\.ini"]
+    },
+    {
+        "note": "u pt del",
+        "dir_from": "H:\\pt",
+        "dir_to": "",
+        "action": "delete",
+        "ignores": ["picasa\\.ini"]
+    },
+    {
+        "note": "u fav to pc",
+        "dir_from": "H:\\#Pics",
+        "dir_to": "D:\\Dropbox\\Pictures",
+        "action": "move",
+        "ignores": ["picasa\\.ini"]
+    }
+]
